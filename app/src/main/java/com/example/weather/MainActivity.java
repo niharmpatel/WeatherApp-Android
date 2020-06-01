@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,8 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity {
 
     TextView textView;
+    TextView mErrorMessageDisplay;
+    ProgressBar mLoadingIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
          * do things like set the text of the TextView.
          */
         textView = (TextView) findViewById(R.id.weatherTextView);
+        mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
+        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
 
         loadWeatherData();
@@ -40,11 +46,40 @@ public class MainActivity extends AppCompatActivity {
      * background method to get the weather data in the background.
      */
     private void loadWeatherData() {
+        showWeatherDataView();
         String location = WeatherPreferences.getPreferredWeatherLocation(this);
         new FetchWeatherTask().execute(location);
     }
 
+    private void showWeatherDataView() {
+        /* First, make sure the error is invisible */
+        mErrorMessageDisplay.setVisibility(View.INVISIBLE);
+        /* Then, make sure the weather data is visible */
+        textView.setVisibility(View.VISIBLE);
+    }
+
+    void showErrorMessage() {
+        /* First, hide the currently visible data */
+        textView.setVisibility(View.INVISIBLE);
+        /* Then, show the error */
+        mErrorMessageDisplay.setVisibility(View.VISIBLE);
+    }
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
+
+        /**
+         * Runs on the UI thread before {@link #doInBackground}.
+         * Invoked directly by {@link #execute} or {@link #executeOnExecutor}.
+         * The default version does nothing.
+         *
+         * @see #onPostExecute
+         * @see #doInBackground
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mLoadingIndicator.setVisibility(View.VISIBLE);
+
+        }
 
         @Override
         protected String[] doInBackground(String... params) {
@@ -74,7 +109,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String[] weatherData) {
+            mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (weatherData != null) {
+                showWeatherDataView();
                 /*
                  * Iterate through the array and append the Strings to the TextView. The reason why we add
                  * the "\n\n\n" after the String is to give visual separation between each String in the
@@ -83,7 +120,10 @@ public class MainActivity extends AppCompatActivity {
                 for (String weatherString : weatherData) {
                     textView.append((weatherString) + "\n\n\n");
                 }
+            } else {
+                showErrorMessage();
             }
+
         }
 
 
