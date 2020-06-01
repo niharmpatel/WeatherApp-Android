@@ -1,8 +1,11 @@
 package com.example.weather;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -10,6 +13,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.weather.Data.WeatherPreferences;
 import com.example.weather.Utilities.Network;
@@ -18,11 +23,14 @@ import com.example.weather.Utilities.OpenWeatherJsonUtils;
 import java.net.URL;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ForecastAdapter.ForecastAdapterOnClickHandler {
 
-    TextView textView;
     TextView mErrorMessageDisplay;
     ProgressBar mLoadingIndicator;
+    private RecyclerView mRecyclerView;
+    private ForecastAdapter mForecastAdapter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +41,19 @@ public class MainActivity extends AppCompatActivity {
          * Using findViewById, we get a reference to our TextView from xml. This allows us to
          * do things like set the text of the TextView.
          */
-        textView = (TextView) findViewById(R.id.weatherTextView);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_forecast);
         mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
+        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+
+        mForecastAdapter = new ForecastAdapter( this);
+        mRecyclerView.setAdapter(mForecastAdapter);
+
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
 
@@ -50,17 +69,31 @@ public class MainActivity extends AppCompatActivity {
         String location = WeatherPreferences.getPreferredWeatherLocation(this);
         new FetchWeatherTask().execute(location);
     }
+    /**
+     * This method is overridden by our MainActivity class in order to handle RecyclerView item
+     * clicks.
+     *
+     * @param weatherForDay The weather for the day that was clicked
+     */
+    @Override
+    public void onClick(String weatherForDay) {
+        Context context = this;
 
+        Class destinationClass = DetailActivity.class;
+        Intent intentToStartDetailActivity = new Intent(context, destinationClass);
+        intentToStartDetailActivity.putExtra(Intent.EXTRA_TEXT, weatherForDay);
+        startActivity(intentToStartDetailActivity);
+    }
     private void showWeatherDataView() {
         /* First, make sure the error is invisible */
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
         /* Then, make sure the weather data is visible */
-        textView.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 
     void showErrorMessage() {
         /* First, hide the currently visible data */
-        textView.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
         /* Then, show the error */
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
@@ -117,9 +150,8 @@ public class MainActivity extends AppCompatActivity {
                  * the "\n\n\n" after the String is to give visual separation between each String in the
                  * TextView. Later, we'll learn about a better way to display lists of data.
                  */
-                for (String weatherString : weatherData) {
-                    textView.append((weatherString) + "\n\n\n");
-                }
+                mForecastAdapter.setWeatherData(weatherData);
+
             } else {
                 showErrorMessage();
             }
@@ -157,6 +189,11 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        /* Use AppCompatActivity's method getMenuInflater to get a handle on the menu inflater */
+        MenuInflater inflater = getMenuInflater();
+        /* Use the inflater's inflate method to inflate our menu layout to this menu */
+        inflater.inflate(R.menu.forecast, menu);
+        /* Return true so that the menu is displayed in the Toolbar */
         return true;
     }
 
@@ -182,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_refresh) {
-            textView.setText("");
+            mForecastAdapter.setWeatherData(null);
             loadWeatherData();
             return true;
         }

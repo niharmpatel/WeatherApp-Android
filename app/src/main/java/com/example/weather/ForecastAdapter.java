@@ -3,6 +3,7 @@ package com.example.weather;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -11,8 +12,40 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapterViewHolder> {
     private String[] mWeatherData;
+    ForecastAdapterOnClickHandler mClickHandler;
+
     public ForecastAdapter() {
 
+    }
+
+    public interface ForecastAdapterOnClickHandler {
+        void onClick(String weatherForDay);
+    }
+    public ForecastAdapter(ForecastAdapterOnClickHandler clickHandler) {
+        mClickHandler = clickHandler;
+    }
+    public class ForecastAdapterViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
+        public final TextView textView;
+
+        public ForecastAdapterViewHolder(View view) {
+            super(view);
+            textView = (TextView) view.findViewById(R.id.tv_weather_data);
+            // COMPLETED (7) Call setOnClickListener on the view passed into the constructor (use 'this' as the OnClickListener)
+            view.setOnClickListener(this);
+        }
+
+        // COMPLETED (6) Override onClick, passing the clicked day's data to mClickHandler via its onClick method
+        /**
+         * This gets called by the child views during a click.
+         *
+         * @param v The View that was clicked
+         */
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            String weatherForDay = mWeatherData[adapterPosition];
+            mClickHandler.onClick(weatherForDay);
+        }
     }
 
     /**
@@ -73,14 +106,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
         return mWeatherData.length;
     }
 
-    class ForecastAdapterViewHolder extends RecyclerView.ViewHolder{
 
-        TextView textView;
-        public ForecastAdapterViewHolder( View view) {
-            super(view);
-            textView = (TextView) view.findViewById(R.id.weatherTextView);
-        }
-    }
     @Override
     public ForecastAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         Context context = viewGroup.getContext();
