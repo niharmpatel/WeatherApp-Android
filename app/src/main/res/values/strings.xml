@@ -1,6 +1,8 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Weather</string>
 
+    <string name="refresh">Refresh</string>
+
     <!-- For labelling today's forecast [CHAR LIMIT=15] -->
     <string name="today">Today</string>
 
