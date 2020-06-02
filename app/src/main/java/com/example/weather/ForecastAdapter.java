@@ -1,6 +1,9 @@
 package com.example.weather;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Loader;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -8,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.AsyncTaskLoader;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapterViewHolder> {
@@ -19,7 +24,14 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
     }
 
     public interface ForecastAdapterOnClickHandler {
+        @SuppressLint("StaticFieldLeak")
+        AsyncTaskLoader<String[]> onCreateLoader(int id, Bundle loaderArgs, LoaderManager.LoaderCallbacks<String> callback);
+
         void onClick(String weatherForDay);
+
+        void onLoadFinished(Loader<String[]> loader, String[] data);
+
+        void onLoaderReset(Loader<String[]> loader);
     }
     public ForecastAdapter(ForecastAdapterOnClickHandler clickHandler) {
         mClickHandler = clickHandler;

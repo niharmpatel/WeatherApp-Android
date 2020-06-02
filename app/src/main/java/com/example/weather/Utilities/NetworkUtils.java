@@ -13,9 +13,9 @@ import java.util.Scanner;
 /**
  * These utilities will be used to communicate with the weather servers.
  */
-public final class Network {
+public final class NetworkUtils {
 
-    private static final String TAG = Network.class.getSimpleName();
+    private static final String TAG = NetworkUtils.class.getSimpleName();
 
     private static final String DYNAMIC_WEATHER_URL =
             "https://andfun-weather.udacity.com/weather";

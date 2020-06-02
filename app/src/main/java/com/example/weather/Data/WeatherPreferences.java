@@ -2,7 +2,8 @@ package com.example.weather.Data;
 
 import android.content.Context;
 
-public class    WeatherPreferences {
+public class WeatherPreferences{
+
     /*
      * Human readable location string, provided by the API.  Because for styling,
      * "Mountain View" is more recognizable than 94043.
@@ -120,4 +121,3 @@ public class    WeatherPreferences {
         return DEFAULT_WEATHER_COORDINATES;
     }
 }
-
