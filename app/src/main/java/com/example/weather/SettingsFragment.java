@@ -1,5 +1,6 @@
 package com.example.weather;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -8,6 +9,9 @@ import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
+
+import com.example.weather.Data.WeatherContract;
+import com.example.weather.Data.WeatherPreferences;
 
 public class SettingsFragment  extends PreferenceFragmentCompat implements
         SharedPreferences.OnSharedPreferenceChangeListener{
@@ -47,8 +51,16 @@ public class SettingsFragment  extends PreferenceFragmentCompat implements
      */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        this.sharedPreferences = sharedPreferences;
-        this.key = key;
+        Activity activity = getActivity();
+
+        if (key.equals(getString(R.string.pref_location_key))) {
+            // we've changed the location
+            // Wipe out any potential PlacePicker latlng values so that we can use this text entry.
+            WeatherPreferences.resetLocationCoordinates(activity);
+        } else if (key.equals(getString(R.string.pref_units_key))) {
+            // units have changed. update lists of weather entries accordingly
+            activity.getContentResolver().notifyChange(WeatherContract.WeatherEntry.CONTENT_URI, null);
+        }
         Preference preference = findPreference(key);
         if (null != preference) {
             if (!(preference instanceof CheckBoxPreference)) {

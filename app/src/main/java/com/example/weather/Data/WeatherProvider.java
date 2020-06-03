@@ -24,6 +24,9 @@ public class WeatherProvider extends ContentProvider {
     public static final int CODE_WEATHER = 100;
     public static final int CODE_WEATHER_WITH_DATE = 101;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
+    private Uri uri;
+    private String selection;
+    private String[] selectionArgs;
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -218,6 +221,18 @@ public class WeatherProvider extends ContentProvider {
         return cursor;
 
     }
+
+    /**
+            * Deletes data at a given URI with optional arguments for more fine tuned deletions.
+            *
+            * @param uri           The full URI to query
+     * @param selectionArgs Used in conjunction with the selection statement
+     * @return The number of rows deleted
+     */
+
+
+
+
 
     /**
      * Implement this to handle requests for the MIME type of the data at the

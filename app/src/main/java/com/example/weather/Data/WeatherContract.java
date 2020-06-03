@@ -29,7 +29,11 @@ public class WeatherContract {
         public static final String COLUMN_WIND_SPEED = "wind";
         public static final String COLUMN_DEGREES = "degrees";
 
-
+        public static Uri buildWeatherUriWithDate(long date) {
+            return CONTENT_URI.buildUpon()
+                    .appendPath(Long.toString(date))
+                    .build();
+        }
         public static String getSqlSelectForTodayOnwards() {
             long normalizedUtcNow = WeatherDateUtils.normalizeDate(System.currentTimeMillis());
             return WeatherContract.WeatherEntry.COLUMN_DATE + " >= " + normalizedUtcNow;
