@@ -8,11 +8,16 @@
     <string name="tomorrow">Tomorrow</string>
 
     <!-- Date format [CHAR LIMIT=NONE] -->
+    <string name="pref_last_notification">last_notification</string>
 
 
     <!-- - - - - - - - - - - - - - - -->
     <!-- Used by SunshineWeatherUtils-->
     <!-- - - - - - - - - - - - - - - -->
+    <!-- Temperature format -->
+    <string name="format_temperature">
+        <xliff:g id="temp">%1.0f</xliff:g>\u00B0
+    </string>
 
     <!-- Temperature format in Celsius [CHAR LIMIT=5] -->
     <string name="format_temperature_celsius">
