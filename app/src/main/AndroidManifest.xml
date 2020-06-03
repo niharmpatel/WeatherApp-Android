@@ -10,6 +10,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".SettingsActivity"></activity>
         <activity
             android:name=".DetailActivity"
             android:parentActivityName=".MainActivity">
@@ -18,8 +19,10 @@
                 android:value=".MainActivity" />
         </activity>
         <activity android:name=".ForecastAdapter" />
-        <activity android:name=".MainActivity">
-
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

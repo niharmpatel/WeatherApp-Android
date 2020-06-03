@@ -29,6 +29,9 @@
         <xliff:g id="speed">%1$1.0f</xliff:g> km/h <xliff:g id="direction">%2$s</xliff:g>
     </string>
 
+    <string name="action_settings">Settings</string>
+
+
     <!-- Wind in mph [CHAR LIMIT=25] -->
     <string name="format_wind_mph">
         <xliff:g id="speed">%1$1.0f</xliff:g> mph <xliff:g id="direction">%2$s</xliff:g>
@@ -95,6 +98,12 @@
     <string name="action_map">action_map</string>
     <string name="action_refresh">action_refresh</string>
     <string name="action_share">action_share</string>
+    <string name="pref_location_default" />
+    <string name="pref_location_key">location_key</string>
+    <string name="pref_location_label" />
+    <string name="pref_units_metric" />
+    <string name="pref_units_key" />
+    <string name="pref_units_label" />
 
 
 </resources>
