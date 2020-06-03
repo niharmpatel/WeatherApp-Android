@@ -2,6 +2,7 @@ package com.example.weather;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,14 +30,16 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity implements
         ForecastAdapter.ForecastAdapterOnClickHandler,
-        LoaderManager.LoaderCallbacks<String[]> {
+        LoaderManager.LoaderCallbacks<String[]>,
+        SharedPreferences.OnSharedPreferenceChangeListener {
+
+
     TextView mErrorMessageDisplay;
     ProgressBar mLoadingIndicator;
     private RecyclerView mRecyclerView;
     private ForecastAdapter mForecastAdapter;
     private static final String TAG = MainActivity.class.getSimpleName();
-
-
+    private static boolean PREFERENCES_HAVE_BEEN_UPDATED = false;
     private static final int FORECAST_LOADER_ID = 0;
 
     @Override
@@ -60,6 +64,13 @@ public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<String[]> callback = MainActivity.this;
         Bundle bundleForLoader = null;
         getSupportLoaderManager().initLoader(loaderId, bundleForLoader, callback);
+        /*
+         * Register MainActivity as an OnPreferenceChangedListener to receive a callback when a
+         * SharedPreference has changed. Please note that we must unregister MainActivity as an
+         * OnSharedPreferenceChanged listener in onDestroy to avoid any memory leaks.
+         */
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener(this);
     }
 
     /**
@@ -188,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void openLocationInMap() {
 
-        String addressString = "1600 Ampitheatre Parkway, CA";
+        String addressString = WeatherPreferences.getPreferredWeatherLocation(this);
         Uri geoLocation = Uri.parse("geo:0,0?q=" + addressString);
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -214,6 +225,38 @@ public class MainActivity extends AppCompatActivity implements
         /* Then, show the error */
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        /*
+         * If the preferences for location or units have changed since the user was last in
+         * MainActivity, perform another query and set the flag to false.
+         *
+         * This isn't the ideal solution because there really isn't a need to perform another
+         * GET request just to change the units, but this is the simplest solution that gets the
+         * job done for now. Later in this course, we are going to show you more elegant ways to
+         * handle converting the units from celsius to fahrenheit and back without hitting the
+         * network again by keeping a copy of the data in a manageable format.
+         */
+        if (PREFERENCES_HAVE_BEEN_UPDATED) {
+            Log.d(TAG, "onStart: preferences were updated");
+            getSupportLoaderManager().restartLoader(FORECAST_LOADER_ID, null, this);
+            PREFERENCES_HAVE_BEEN_UPDATED = false;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        /* Unregister MainActivity as an OnPreferenceChangedListener to avoid any memory leaks. */
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+
 
     /**
      * Instantiate and return a new Loader for the given ID.
@@ -416,5 +459,24 @@ public class MainActivity extends AppCompatActivity implements
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Called when a shared preference is changed, added, or removed. This
+     * may be called even if a preference is set to its existing value.
+     *
+     * <p>This callback will be run on your main thread.
+     *
+     * <p><em>Note: This callback will not be triggered when preferences are cleared via
+     * .</em>
+     *
+     * @param sharedPreferences The {@link SharedPreferences} that received
+     *                          the change.
+     * @param key               The key of the preference that was changed, added, or
+     */
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        PREFERENCES_HAVE_BEEN_UPDATED = true;
+
     }
 }
