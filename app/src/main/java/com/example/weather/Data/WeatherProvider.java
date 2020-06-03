@@ -286,8 +286,24 @@ public class WeatherProvider extends ContentProvider {
      */
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        throw new RuntimeException("Student, you need to implement the delete method!");
-    }
+        int numRowsDeleted;
+
+        if (null == selection) selection = "1";
+
+        switch (sUriMatcher.match(uri)) {
+            case CODE_WEATHER:
+                numRowsDeleted = mOpenHelper.getWritableDatabase().delete(
+                        WeatherContract.WeatherEntry.TABLE_NAME,
+                        selection,
+                        selectionArgs);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        if (numRowsDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return numRowsDeleted;    }
 
     /**
      * Implement this to handle requests to update one or more rows.

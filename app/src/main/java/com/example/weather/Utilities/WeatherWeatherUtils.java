@@ -11,7 +11,7 @@ import com.example.weather.Data.WeatherPreferences;
  * from kph to mph, and from degrees to NSEW.  It also contains the mapping of weather condition
  * codes in OpenWeatherMap to strings.  These strings are contained
  */
-class WeatherWeatherUtils {
+public class WeatherWeatherUtils {
 
     private static final String LOG_TAG = WeatherWeatherUtils.class.getSimpleName();
 
