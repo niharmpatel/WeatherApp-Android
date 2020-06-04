@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 public class FakeDataUtils {
+
     private static int [] weatherIDs = {200,300,500,711,900,962};
 
     /**
