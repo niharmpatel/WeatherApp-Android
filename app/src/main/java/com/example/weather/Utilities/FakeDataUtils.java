@@ -44,8 +44,8 @@ public class FakeDataUtils {
             fakeValues.add(FakeDataUtils.createTestWeatherContentValues(today + TimeUnit.DAYS.toMillis(i)));
         }
         // Bulk Insert our new weather data into Sunshine's Database
-        context.getContentResolver().bulkInsert(
-                WeatherContract.WeatherEntry.CONTENT_URI,
-                fakeValues.toArray(new ContentValues[7]));
+//        context.getContentResolver().bulkInsert(
+//                WeatherContract.WeatherEntry.CONTENT_URI,
+//                fakeValues.toArray(new ContentValues[7]));
     }
 }

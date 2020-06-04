@@ -31,20 +31,20 @@ public class WeatherWeatherUtils {
      * Temperature data is stored in Celsius by our app. Depending on the user's preference,
      * the app may need to display the temperature in Fahrenheit. This method will perform that
      * temperature conversion if necessary. It will also format the temperature so that no
-     * decimal points show. Temperatures will be formatted to the following form: "21°C"
+     * decimal points show. Temperatures will be formatted to the following form: "21°"
      *
      * @param context     Android Context to access preferences and resources
      * @param temperature Temperature in degrees Celsius (°C)
      *
      * @return Formatted temperature String in the following form:
-     * "21°C"
+     * "21°"
      */
     public static String formatTemperature(Context context, double temperature) {
-        int temperatureFormatResourceId = R.string.format_temperature;
-
         if (!WeatherPreferences.isMetric(context)) {
             temperature = celsiusToFahrenheit(temperature);
         }
+
+        int temperatureFormatResourceId = R.string.format_temperature;
 
         /* For presentation, assume the user doesn't care about tenths of a degree. */
         return String.format(context.getString(temperatureFormatResourceId), temperature);
@@ -52,13 +52,13 @@ public class WeatherWeatherUtils {
 
     /**
      * This method will format the temperatures to be displayed in the
-     * following form: "HIGH°C / LOW°C"
+     * following form: "HIGH° / LOW°"
      *
      * @param context Android Context to access preferences and resources
      * @param high    High temperature for a day in user's preferred units
      * @param low     Low temperature for a day in user's preferred units
      *
-     * @return String in the form: "HIGH°C / LOW°C"
+     * @return String in the form: "HIGH° / LOW°"
      */
     public static String formatHighLows(Context context, double high, double low) {
         long roundedHigh = Math.round(high);
@@ -83,16 +83,15 @@ public class WeatherWeatherUtils {
      * @return Wind String in the following form: "2 km/h SW"
      */
     public static String getFormattedWind(Context context, float windSpeed, float degrees) {
-
         int windFormat = R.string.format_wind_kmh;
 
         if (!WeatherPreferences.isMetric(context)) {
-                windFormat = R.string.format_wind_kmh;
+            windFormat = R.string.format_wind_mph;
             windSpeed = .621371192237334f * windSpeed;
         }
 
         /*
-         * You know what's fun, writing really long if/else statements with tons of possible
+         * You know what's fun? Writing really long if/else statements with tons of possible
          * conditions. Seriously, try it!
          */
         String direction = "Unknown";
@@ -113,6 +112,7 @@ public class WeatherWeatherUtils {
         } else if (degrees >= 292.5 && degrees < 337.5) {
             direction = "NW";
         }
+
         return String.format(context.getString(windFormat), windSpeed, direction);
     }
 
@@ -122,7 +122,7 @@ public class WeatherWeatherUtils {
      *
      * @param context   Android context
      * @param weatherId from OpenWeatherMap API response
-     *                  http://bugs.openweathermap.org/projects/api/wiki/Weather_Condition_Codes
+     *                  See http://openweathermap.org/weather-conditions for a list of all IDs
      *
      * @return String for the weather condition, null if no relation is found.
      */

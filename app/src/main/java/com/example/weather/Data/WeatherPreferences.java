@@ -26,7 +26,7 @@ public class WeatherPreferences{
      * @param lon      the longitude of the city
      */
     public static void setLocationDetails(Context context, double lat, double lon) {
-        SharedPreferences sp = android.preference.PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
 
         editor.putLong(PREF_COORD_LAT, Double.doubleToRawLongBits(lat));
@@ -40,7 +40,7 @@ public class WeatherPreferences{
      * @param context Context used to get the SharedPreferences
      */
     public static void resetLocationCoordinates(Context context) {
-        SharedPreferences sp = android.preference.PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
 
         editor.remove(PREF_COORD_LAT);
@@ -58,7 +58,7 @@ public class WeatherPreferences{
      * "94043,USA" if SharedPreferences have not been implemented yet.
      */
     public static String getPreferredWeatherLocation(Context context) {
-        SharedPreferences sp = android.preference.PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
         String keyForLocation = context.getString(R.string.pref_location_key);
         String defaultLocation = context.getString(R.string.pref_location_default);
@@ -73,7 +73,7 @@ public class WeatherPreferences{
      * @return true if metric display should be used, false if imperial display should be used
      */
     public static boolean isMetric(Context context) {
-        SharedPreferences sp = android.preference.PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
         String keyForUnits = context.getString(R.string.pref_units_key);
         String defaultUnits = context.getString(R.string.pref_units_metric);
@@ -97,7 +97,7 @@ public class WeatherPreferences{
      * @return an array containing the two coordinate values for the user's preferred location
      */
     public static double[] getLocationCoordinates(Context context) {
-        SharedPreferences sp = android.preference.PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
         double[] preferredCoordinates = new double[2];
 
@@ -126,7 +126,7 @@ public class WeatherPreferences{
      * @return true if lat/long are saved in SharedPreferences
      */
     public static boolean isLocationLatLonAvailable(Context context) {
-        SharedPreferences sp = android.preference.PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
         boolean spContainLatitude = sp.contains(PREF_COORD_LAT);
         boolean spContainLongitude = sp.contains(PREF_COORD_LONG);
@@ -150,7 +150,7 @@ public class WeatherPreferences{
         String lastNotificationKey = context.getString(R.string.pref_last_notification);
 
         /* As usual, we use the default SharedPreferences to access the user's preferences */
-        SharedPreferences sp = android.preference.PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
         /*
          * Here, we retrieve the time in milliseconds when the last notification was shown. If

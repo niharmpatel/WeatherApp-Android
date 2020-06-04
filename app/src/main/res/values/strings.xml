@@ -1,6 +1,50 @@
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">Weather</string>
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2016 The Android Open Source Project
 
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  - This file contains all of the strings used throughout Sunshine. They can be accessed       -
+  - through calls to Context#getString. This strings are organized by where they are used in   -
+  - Sunshine.                                                                                  -
+  -                                                                                            -
+  - Throughout this file, you will see <xliff:g> tags. These help any potential translators    -
+  - properly translate your strings and also give developers that are looking at your strings  -
+  - an idea of exactly how they are used.                                                      -
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
+
+
+
+    <!-- - - - - - - - - - - - - -
+      - Used throughout Sunshine -
+      - - - - - - - - - - - - - -->
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      - Used in Action Bar and in AndroidManifest to tell the device the name of this app. It's  -
+      - good practice to keep this short, so if your app's name was "The Greatest Weather App    -
+      - In the History of Mankind", your launcher icon isn't displayed with "The greatest Wea"   -
+      - or something similar.                                                                    -
+      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <string name="app_name">Sunshine</string>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      - By convention, "action" denotes that this String will be used as the label for an        -
+      - Action, typically from the action bar.  The ActionBar is limited real estate, so         -
+      - shorter is better.                                                                       -
+      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
     <string name="action_map">Map Location</string>
     <!-- Used to share the weather forecast on a given day from the DetailActivity -->
     <string name="action_share">Share</string>
@@ -12,8 +56,20 @@
     <string name="action_refresh">Refresh</string>
 
     <!-- Title of the DetailActivity -->
+    <string name="title_activity_detail">Details</string>
     <!-- Title of the SettingsActivity -->
+    <string name="title_activity_settings">Settings</string>
 
+    <string name="error_message">
+        An error has occurred. Please try again by clicking REFRESH
+    </string>
+
+    <string name="content_authority">com.example.android.sunshine</string>
+
+
+    <!-- - - - - - - - - - - - - - - -
+      - Used by SunshinePreferences  -
+      - - - - - - - - - - - - - - - -->
 
     <!-- Label for the location preference -->
     <string name="pref_location_label">Location</string>
@@ -29,8 +85,10 @@
     <string name="pref_units_label">Temperature Units</string>
 
     <!-- Label for metric option in temperature unit preference -->
+    <string name="pref_units_label_metric">Metric</string>
 
     <!-- Label for imperial option in temperature unit preference -->
+    <string name="pref_units_label_imperial">Imperial</string>
 
     <!-- Key name for temperature unit preference in SharedPreferences -->
     <string name="pref_units_key" translatable="false">units</string>
@@ -39,13 +97,22 @@
     <string name="pref_units_metric" translatable="false">metric</string>
 
     <!-- Value in SharedPreferences for imperial temperature unit option -->
+    <string name="pref_units_imperial" translatable="false">imperial</string>
 
     <!-- Strings related to Notification Enabled preference -->
+    <string name="pref_enable_notifications_key" translatable="false">enable_notifications</string>
+    <string name="pref_enable_notifications_label">Weather Notifications</string>
+
+    <string name="pref_enable_notifications_true">Enabled</string>
+    <string name="pref_enable_notifications_false">Not Enabled</string>
 
     <string name="pref_last_notification">last_notification</string>
 
 
 
+    <!-- - - - - - - - - - - - - - -
+      - Used by SunshineDateUtils  -
+      - - - - - - - - - - - - - - -->
 
     <!-- For labelling today's forecast -->
     <string name="today">Today</string>
@@ -54,13 +121,22 @@
     <string name="tomorrow">Tomorrow</string>
 
     <!-- Date format -->
+    <string name="format_full_friendly_date">
+        <xliff:g id="month">%1$s</xliff:g>, <xliff:g id="day">%2$s</xliff:g>
+    </string>
 
+
+
+    <!-- - - - - - - - - - - - - - - - -
+      - Used by SunshineWeatherUtils   -
+      - - - - - - - - - - - - - - - - -->
 
     <!-- Temperature format -->
     <string name="format_temperature">
         <xliff:g id="temp">%1.0f</xliff:g>\u00B0
     </string>
 
+    <string name="wind_label">Wind</string>
     <!-- Wind in kph -->
     <string name="format_wind_kmh">
         <xliff:g id="speed">%1$1.0f</xliff:g> km/h
@@ -68,12 +144,18 @@
     </string>
 
     <!-- Wind in mph -->
+    <string name="format_wind_mph">
+        <xliff:g id="speed">%1$1.0f</xliff:g> mph
+        <xliff:g id="direction">%2$s</xliff:g>
+    </string>
 
+    <string name="pressure_label">Pressure</string>
     <!-- Pressure format -->
     <string name="format_pressure">
         <xliff:g id="pressure">%1.0f</xliff:g> hPa
     </string>
 
+    <string name="humidity_label">Humidity</string>
     <!-- Humidity format -->
     <string name="format_humidity">
         <xliff:g id="humidity">%1.0f</xliff:g> %%
@@ -89,6 +171,8 @@
     <string name="condition_504">Extreme Rain</string>
     <string name="condition_511">Freezing Rain</string>
     <string name="condition_520">Light Shower</string>
+    <string name="condition_521">Shower</string>
+    <string name="condition_522">Heavy Shower</string>
     <string name="condition_531">Ragged Shower</string>
     <string name="condition_600">Light Snow</string>
     <string name="condition_601">Snow</string>
@@ -145,10 +229,23 @@
       - Fun Fact: Accessibility is abbreviated a11y because accessibility starts with 'a', -
       - followed by 11 letters, and then a 'y'. It is pronounced alley, like an alley cat. -
       - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <string name="a11y_forecast">Forecast: <xliff:g id="condition">%1$s</xliff:g></string>
+    <string name="a11y_forecast_icon">Forecast icon: <xliff:g id="condition">%1$s</xliff:g></string>
+    <string name="a11y_high_temp">High: <xliff:g id="high">%1$s</xliff:g></string>
+    <string name="a11y_low_temp">Low: <xliff:g id="low">%1$s</xliff:g></string>
+    <string name="a11y_humidity">Humidity: <xliff:g id="humidity">%1$s</xliff:g></string>
+    <string name="a11y_pressure">Barometric Pressure: <xliff:g id="pressure">%1$s</xliff:g></string>
+    <string name="a11y_wind">Wind speed and direction: <xliff:g id="wind">%1$s</xliff:g></string>
+
 
 
     <!-- Used by NotificationUtils -->
 
     <!-- The format of the notification we show when the weather is updated -->
+    <string name="format_notification">
+        Forecast:<xliff:g id="condition">%1$s</xliff:g> -
+        High:<xliff:g id="high">%2$s</xliff:g>
+        Low:<xliff:g id="low">%3$s</xliff:g>
+    </string>
 
 </resources>
