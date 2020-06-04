@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.weather.Data.WeatherContract;
 import com.example.weather.Data.WeatherPreferences;
-import com.example.weather.Utilities.FakeDataUtils;
+import com.example.weather.sync.SunshineSyncUtils;
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         getSupportActionBar().setElevation(0f);
 
-        FakeDataUtils.insertFakeData(this);
 
         /*
          * Using findViewById, we get a reference to our RecyclerView from xml. This allows us to
@@ -132,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements
 
 
         showLoading();
+        SunshineSyncUtils.initialize(this);
 
         /*
          * Ensures a loader is initialized and active. If the loader doesn't already exist, one is
