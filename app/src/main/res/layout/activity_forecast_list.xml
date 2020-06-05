@@ -22,7 +22,7 @@
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintTop_toTopOf="@+id/guideline"
     tools:src="@drawable/art_clouds"
-        android:contentDescription="@string/todo" />
+         />
 
     <TextView
         android:id="@+id/date"
