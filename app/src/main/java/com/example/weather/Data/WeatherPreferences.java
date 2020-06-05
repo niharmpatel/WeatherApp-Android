@@ -2,7 +2,10 @@ package com.example.weather.Data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
+
+import androidx.annotation.RequiresApi;
 
 import com.example.weather.R;
 
@@ -25,6 +28,7 @@ public class WeatherPreferences{
      * @param lat      the latitude of the city
      * @param lon      the longitude of the city
      */
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     public static void setLocationDetails(Context context, double lat, double lon) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
@@ -146,6 +150,7 @@ public class WeatherPreferences{
      * @param context Used to access SharedPreferences
      * @return true if the user prefers to see notifications, false otherwise
      */
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     public static boolean areNotificationsEnabled(Context context) {
         /* Key for accessing the preference for showing notifications */
         String displayNotificationsKey = context.getString(R.string.pref_enable_notifications_key);
